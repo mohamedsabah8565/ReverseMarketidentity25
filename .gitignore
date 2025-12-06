@@ -2,8 +2,6 @@
 bin/
 obj/
 node_modules/
-TestResults/
-logs/
 *.log
 *.db
 *.sqlite
