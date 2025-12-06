@@ -57,9 +57,18 @@ const notificationManager = {
     },
 
     loadNotifications: function () {
+        console.log('📥 تحميل الإشعارات...');
+        
         fetch('/Notifications/GetLatestNotifications?take=5')
-            .then(response => response.json())
+            .then(response => {
+                console.log('📡 استجابة الخادم:', response.status);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
+                console.log('📦 البيانات المستلمة:', data);
                 if (data.notifications && data.notifications.length > 0) {
                     this.displayNotifications(data.notifications);
                 } else {
@@ -72,11 +81,14 @@ const notificationManager = {
                 }
             })
             .catch(err => {
-                console.error('خطأ في تحميل الإشعارات:', err);
+                console.error('❌ خطأ في تحميل الإشعارات:', err);
                 this.list.innerHTML = `
                     <div class="text-center p-4 text-danger">
                         <i class="fas fa-exclamation-circle fa-2x mb-2"></i>
                         <p class="mb-0">خطأ في تحميل الإشعارات</p>
+                        <button class="btn btn-sm btn-outline-primary mt-2" onclick="notificationManager.loadNotifications()">
+                            <i class="fas fa-redo"></i> إعادة المحاولة
+                        </button>
                     </div>
                 `;
             });

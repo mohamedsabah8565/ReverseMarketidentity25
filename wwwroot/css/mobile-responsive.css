@@ -558,3 +558,121 @@
         box-shadow: none !important;
     }
 }
+
+/* تحسينات القوائم المنسدلة للموبايل */
+@media (max-width: 768px) {
+    /* إصلاح مشكلة عدم فتح القوائم المنسدلة */
+    .dropdown-toggle::after {
+        display: inline-block !important;
+        margin-left: 0.5rem;
+    }
+    
+    .dropdown-menu {
+        position: fixed !important;
+        top: auto !important;
+        left: 10px !important;
+        right: 10px !important;
+        bottom: 10px !important;
+        width: auto !important;
+        max-width: none !important;
+        transform: none !important;
+        border-radius: 15px !important;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
+        z-index: 9999 !important;
+        max-height: 70vh !important;
+        overflow-y: auto !important;
+        margin: 0 !important;
+        border: none !important;
+    }
+    
+    /* تحسين قائمة اللغات */
+    #languageDropdown {
+        position: fixed !important;
+        top: auto !important;
+        left: 10px !important;
+        right: 10px !important;
+        bottom: 10px !important;
+        width: auto !important;
+        max-width: none !important;
+        transform: none !important;
+        border-radius: 15px !important;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
+        z-index: 9999 !important;
+        max-height: 70vh !important;
+        overflow-y: auto !important;
+        margin: 0 !important;
+        border: none !important;
+    }
+    
+    /* تحسين عناصر القائمة */
+    .dropdown-item {
+        padding: 1rem !important;
+        font-size: 1.1rem !important;
+        border-bottom: 1px solid #f8f9fa;
+        white-space: normal !important;
+    }
+    
+    .dropdown-item:last-child {
+        border-bottom: none;
+    }
+    
+    .dropdown-item:hover,
+    .dropdown-item:focus {
+        background-color: var(--bs-primary) !important;
+        color: white !important;
+    }
+    
+    /* تحسين أزرار القائمة */
+    .language-form button {
+        width: 100% !important;
+        text-align: right !important;
+        padding: 1rem !important;
+        border: none !important;
+        background: none !important;
+        font-size: 1.1rem !important;
+    }
+    
+    .language-form button:hover {
+        background-color: var(--bs-primary) !important;
+        color: white !important;
+    }
+    
+    /* تحسين قائمة المستخدم */
+    .user-dropdown + .dropdown-menu {
+        position: fixed !important;
+        top: auto !important;
+        left: 10px !important;
+        right: 10px !important;
+        bottom: 10px !important;
+        width: auto !important;
+        max-width: none !important;
+        transform: none !important;
+        border-radius: 15px !important;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
+        z-index: 9999 !important;
+        max-height: 70vh !important;
+        overflow-y: auto !important;
+        margin: 0 !important;
+        border: none !important;
+    }
+    
+    /* إضافة خلفية شفافة عند فتح القائمة */
+    .dropdown-menu.show::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: -1;
+        pointer-events: none;
+    }
+    
+    /* تحسين التفاعل مع اللمس */
+    .dropdown-toggle,
+    .dropdown-item {
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+    }
+}

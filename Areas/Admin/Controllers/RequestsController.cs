@@ -290,9 +290,13 @@ namespace ReverseMarket.Areas.Admin.Controllers
             {
                 if (request.User != null && !string.IsNullOrEmpty(request.User.PhoneNumber))
                 {
+                    // ✅ بناء رابط مباشر للطلب
+                    var requestUrl = $"{Request.Scheme}://{Request.Host}/Requests/Details/{request.Id}";
+                    
                     var messageText = $"مرحبا {request.User.FirstName}!\n\n" +
                                      $"تم الموافقة على طلبك: {request.Title}\n\n" +
                                      $"سيتم اشعار المتاجر المتخصصة وستبدا بتلقي العروض قريبا.\n\n" +
+                                     $"🔗 لمشاهدة طلبك:\n{requestUrl}\n\n" +
                                      $"شكرا لاستخدامك السوق العكسي";
 
                     _logger.LogInformation("📤 إرسال رسالة موافقة للمشتري {Phone}:\n{Message}",
@@ -487,6 +491,9 @@ namespace ReverseMarket.Areas.Admin.Controllers
                 {
                     try
                     {
+                        // ✅ بناء رابط مباشر للطلب
+                        var requestUrl = $"{Request.Scheme}://{Request.Host}/Requests/Details/{fullRequest.Id}";
+                        
                         // ✅ بناء رسالة مفصلة وواضحة مع إيموجي للوضوح
                         var messageText = $"🔔 طلب جديد معتمد في تخصصك!\n\n" +
                                          $"مرحباً {store.StoreName ?? store.FirstName}!\n\n" +
@@ -497,7 +504,7 @@ namespace ReverseMarket.Areas.Admin.Controllers
                                          $"👤 المشتري: {fullRequest.User?.FirstName} {fullRequest.User?.LastName}\n" +
                                          $"📞 للتواصل: {fullRequest.User?.PhoneNumber}\n\n" +
                                          $"📅 تاريخ الطلب: {fullRequest.CreatedAt:yyyy-MM-dd}\n\n" +
-                                         $"للمشاهدة الكاملة، تفضل بزيارة موقعنا\n\n" +
+                                         $"🔗 للمشاهدة الكاملة والتفاصيل:\n{requestUrl}\n\n" +
                                          $"🛒 السوق العكسي";
 
                         _logger.LogInformation("📤 إرسال رسالة للمتجر {StoreName} ({StoreId}) - {Phone}",

@@ -1004,4 +1004,29 @@
     <value>طبقة أمان إضافية للمسؤولين</value>
   </data>
   
+  <!-- Chat and Notifications -->
+  <data name="Chat" xml:space="preserve">
+    <value>المحادثات</value>
+  </data>
+  <data name="Notifications" xml:space="preserve">
+    <value>الإشعارات</value>
+  </data>
+  <data name="Messages" xml:space="preserve">
+    <value>الرسائل</value>
+  </data>
+  <data name="TypeMessage" xml:space="preserve">
+    <value>اكتب رسالتك...</value>
+  </data>
+  <data name="NoMessages" xml:space="preserve">
+    <value>لا توجد رسائل</value>
+  </data>
+  <data name="NoNotifications" xml:space="preserve">
+    <value>لا توجد إشعارات</value>
+  </data>
+  <data name="MarkAsRead" xml:space="preserve">
+    <value>تحديد كمقروء</value>
+  </data>
+  <data name="MarkAllAsRead" xml:space="preserve">
+    <value>تحديد الكل كمقروء</value>
+  </data>
 </root>

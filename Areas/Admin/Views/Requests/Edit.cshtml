@@ -70,7 +70,8 @@
                                 @foreach (var category in categories)
                                 {
                                     <option value="@category.Id" 
-                                            data-subcategories="@Newtonsoft.Json.JsonConvert.SerializeObject(category.SubCategories1?.Select(s => new { s.Id, s.Name, SubCategories2 = s.SubCategories2?.Select(s2 => new { s2.Id, s2.Name }) }))">
+                                            data-subcategories="@Newtonsoft.Json.JsonConvert.SerializeObject(category.SubCategories1?.Select(s => new { s.Id, s.Name, SubCategories2 = s.SubCategories2?.Select(s2 => new { s2.Id, s2.Name }) }))"
+                                            @(Model.CategoryId == category.Id ? "selected" : "")>
                                         @category.Name
                                     </option>
                                 }
