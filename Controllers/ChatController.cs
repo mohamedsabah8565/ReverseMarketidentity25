@@ -24,37 +24,47 @@ namespace ReverseMarket.Controllers
             _hubContext = hubContext;
         }
 
-        // ✅ صفحة المحادثات الخاصة بالمستخدم - يجب أن تظهر بدون لوحة تحكم الأدمن
+        // ✅ صفحة المحادثات الخاصة بالمستخدم - واجهة منفصلة للمستخدمين العاديين
         public async Task<IActionResult> Index(string withUser)
         {
-            // check it first : 
+            // التحقق من صحة البيانات
             if (string.IsNullOrEmpty(withUser) || User.Identity.Name.ToLower().Equals(withUser.ToLower()))
                 return RedirectToAction(nameof(MyChatting));
 
-            // return both sender and receiver full names from db :
-            var SenderFullName = await _userManager.FindByNameAsync(User.Identity.Name.ToLower());
-            string ReceiverShaping = withUser;
+            // جلب بيانات المرسل والمستقبل
+            var senderFullName = await _userManager.FindByNameAsync(User.Identity.Name.ToLower());
+            string receiverShaping = withUser;
 
-            // normalize receiver phone number
-            int index = ReceiverShaping.IndexOf("964");
-            string result = index >= 0 ? ReceiverShaping.Substring(index) : ReceiverShaping;
-            ReceiverShaping = $"+{result.Trim().ToLower()}";
+            // تطبيع رقم الهاتف للمستقبل
+            int index = receiverShaping.IndexOf("964");
+            string result = index >= 0 ? receiverShaping.Substring(index) : receiverShaping;
+            receiverShaping = $"+{result.Trim().ToLower()}";
 
-            var ReceiverFullName = await _userManager.FindByNameAsync(ReceiverShaping);
+            var receiverFullName = await _userManager.FindByNameAsync(receiverShaping);
 
-            if (ReceiverFullName == null)
+            if (receiverFullName == null)
             {
                 TempData["ErrorMessage"] = "المستخدم غير موجود";
                 return RedirectToAction(nameof(MyChatting));
             }
 
-            ChatMembersDto members = new ChatMembersDto();
-            members.SenderId = User.Identity.Name.ToLower();
-            members.ReceiverId = withUser.ToLower();
-            members.SenderFullName = SenderFullName.FirstName + " " + SenderFullName.LastName;
-            members.ReceiverFullName = ReceiverFullName.FirstName + " " + ReceiverFullName.LastName;
+            // التحقق من أن المستخدم ليس أدمن - إذا كان أدمن يذهب للواجهة الإدارية
+            if (User.IsInRole("Admin"))
+            {
+                return RedirectToAction("Index", "Chat", new { area = "Admin", withUser = withUser });
+            }
 
-            return View(members); // Don't load messages in main view
+            var members = new ChatMembersDto
+            {
+                SenderId = User.Identity.Name.ToLower(),
+                ReceiverId = withUser.ToLower(),
+                SenderFullName = senderFullName.FirstName + " " + senderFullName.LastName,
+                ReceiverFullName = receiverFullName.FirstName + " " + receiverFullName.LastName
+            };
+
+            // استخدام Layout العادي للمستخدمين العاديين
+            ViewBag.UseAdminLayout = false;
+            return View(members);
         }
 
         // Ajax endpoint to load messages

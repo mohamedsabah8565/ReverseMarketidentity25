@@ -67,6 +67,7 @@
 
     <link rel="stylesheet" href="~/css/styles-complete.css" />
     <link rel="stylesheet" href="~/css/notifications.css" />
+    <link rel="stylesheet" href="~/css/mobile-responsive.css" />
    
 
 
@@ -189,14 +190,17 @@
                                 @await Html.PartialAsync("_NotificationBell")
                             </li>
                         }
-                        <!-- Language Selector -->
+                        <!-- Language Selector - محسن للموبايل -->
                         <li class="nav-item dropdown language-selector">
                             <a class="nav-link dropdown-toggle language-dropdown" href="#" id="languageMenu"
-                               role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                               role="button" data-bs-toggle="dropdown" aria-expanded="false"
+                               data-bs-auto-close="true">
                                 <span class="flag">@currentLangInfo.Flag</span>
                                 <span class="d-none d-sm-inline">@currentLangInfo.NativeName</span>
+                                <span class="d-sm-none">اللغة</span>
                             </a>
-                            <ul class="dropdown-menu dropdown-menu-end" id="languageDropdown">
+                            <ul class="dropdown-menu dropdown-menu-end" id="languageDropdown" 
+                                style="min-width: 200px; z-index: 9999;">
                                 @foreach (var language in supportedLanguages)
                                 {
                                     <li>
@@ -205,13 +209,16 @@
                                             <input type="hidden" name="culture" value="@language.Code" />
                                             <input type="hidden" name="returnUrl" value="@(Context.Request.Path + Context.Request.QueryString)" />
                                             <button type="submit"
-                                                    class="dropdown-item @(currentLanguage == language.Code ? "active" : "")"
-                                                    @(currentLanguage == language.Code ? "disabled" : "")>
-                                                <span class="flag">@language.Flag</span>
-                                                <span>@language.NativeName</span>
+                                                    class="dropdown-item d-flex align-items-center justify-content-between @(currentLanguage == language.Code ? "active" : "")"
+                                                    @(currentLanguage == language.Code ? "disabled" : "")
+                                                    style="border: none; background: none; width: 100%; text-align: right; padding: 0.75rem 1rem;">
+                                                <div class="d-flex align-items-center">
+                                                    <span class="flag me-2">@language.Flag</span>
+                                                    <span>@language.NativeName</span>
+                                                </div>
                                                 @if (currentLanguage == language.Code)
                                                 {
-                                                    <i class="fas fa-check ms-auto text-success"></i>
+                                                    <i class="fas fa-check text-success"></i>
                                                 }
                                             </button>
                                         </form>
@@ -516,6 +523,48 @@
             </div>
         </div>
     </footer>
+
+    <!-- التنقل السفلي للموبايل -->
+    <nav class="mobile-bottom-nav d-sm-none">
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "Index" && ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active" : "")" href="/">
+                    <i class="fas fa-home"></i>
+                    <span>@Localizer["Home"]</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Requests" ? "active" : "")" href="/Requests">
+                    <i class="fas fa-list"></i>
+                    <span>@Localizer["Requests"]</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Stores" ? "active" : "")" href="/Stores">
+                    <i class="fas fa-store"></i>
+                    <span>@Localizer["Stores"]</span>
+                </a>
+            </li>
+            @if (isLoggedIn)
+            {
+                <li class="nav-item">
+                    <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Profile" ? "active" : "")" href="/Profile">
+                        <i class="fas fa-user"></i>
+                        <span>@Localizer["Profile"]</span>
+                    </a>
+                </li>
+            }
+            else
+            {
+                <li class="nav-item">
+                    <a class="nav-link" href="/Account/Login">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span>@Localizer["Login"]</span>
+                    </a>
+                </li>
+            }
+        </ul>
+    </nav>
 
     <button id="backToTop" class="btn btn-custom position-fixed" style="bottom: 2rem; @(direction == "rtl" ? "left" : "right"): 2rem; z-index: 1000; display: none; border-radius: 50%; width: 50px; height: 50px;">
         <i class="fas fa-arrow-up"></i>

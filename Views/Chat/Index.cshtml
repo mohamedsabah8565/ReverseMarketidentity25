@@ -2,7 +2,9 @@
 @* @model ChatMembersDto *@
 @model ReverseMarket.Controllers.ChatMembersDto
 @{
-    Layout = "/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    // ✅ استخدام Layout مناسب حسب نوع المستخدم
+    Layout = ViewBag.UseAdminLayout == false ? "~/Views/Shared/_Layout.cshtml" : "/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "المحادثة مع " + Model.ReceiverFullName;
     var messages = ViewBag.Messages as List<ChatMessage> ?? new List<ChatMessage>();
     var currentUser = Model.SenderId;   // <-- your app’s current user id/name
     var withUser = Model.ReceiverId;
